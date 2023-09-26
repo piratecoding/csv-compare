@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Papa from 'papaparse';
 
@@ -11,7 +10,6 @@ function App() {
   
 
   const handleFile = (event: any) => {
-    console.log("EVENT", event)
     Papa.parse(event.target.files[0], {
       header: true,
       skipEmptyLines: true,
@@ -35,12 +33,17 @@ function App() {
   return (
     <>
       <div>
+        <h1 style={{textAlign: "center"}}>CSV comparison tool</h1>
+      </div>
+
+      <div style={{display: "inline-flex"}}>
+        <p style={{marginRight: "10px"}}>Upload your CSV file</p>
         <input 
           type="file" 
           name='file'
           accept='.csv'
           onChange={handleFile}
-          style={{display:"block", margin:" 10px auto"}}
+          style={{margin:" 16px auto"}}
         />
       </div>
 
@@ -50,7 +53,7 @@ function App() {
         <thead>
           <tr>
             {columnyArray.map((col, i) => (
-              <th key={i}>{col}</th>
+              <th style={{border: "1px solid"}} key={i}>{col}</th>
             ))}
           </tr>
         </thead>
