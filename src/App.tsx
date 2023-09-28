@@ -1,73 +1,36 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
-import Papa from 'papaparse';
+import { Table } from './Table/Table';
+import { InputField } from './InputField/InputField';
 
 function App() {
+  const [columnsArray, setColumn] = useState<string[]>([]);
+  const [valuesArray, setValues] = useState<string[][]>([]);
 
-  const [data, setData] = useState([]);
-  const [columnyArray, setColumn] = useState<string[]>([]);
-  const [values, setValues] = useState<string[][]>([]);
-  
-
-  const handleFile = (event: any) => {
-    Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
-      complete: function(result: any) {
-        const columnyArray: any = [];
-        const valuesArray: any = [];
-
-        result.data.map((elem: any)  => {
-          columnyArray.push(Object.keys(elem));
-          valuesArray.push(Object.values(elem));
-        });
-
-        setData(result.data);
-        setColumn(columnyArray[0]);
-        setValues(valuesArray);
-      }
-    })
-  }
-
+    const handleFileUpload = (data: any) => {
+      setValues(data[1]);
+      setColumn(data[0]);
+    }
 
   return (
-    <>
+    <>      
       <div>
         <h1 style={{textAlign: "center"}}>CSV comparison tool</h1>
       </div>
 
-      <div style={{display: "inline-flex"}}>
-        <p style={{marginRight: "10px"}}>Upload your CSV file</p>
-        <input 
-          type="file" 
-          name='file'
-          accept='.csv'
-          onChange={handleFile}
-          style={{margin:" 16px auto"}}
-        />
-      </div>
+      <InputField onFileUpload={handleFileUpload} />
 
       <br />
 
-      <table style={{borderCollapse: "collapse", border: "1px solid black", margin: "5px auto"}}>
-        <thead>
-          <tr>
-            {columnyArray.map((col, i) => (
-              <th style={{border: "1px solid"}} key={i}>{col}</th>
-            ))}
-          </tr>
-        </thead>
-
-        <tbody>
-          {values.map((v, i) => (
-            <tr key={i}>
-              {v.map((value, j) => (
-                <td style={{border: "1px solid"}} key={j}>{value}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div style={{display: "flex"}}>
+        <div style={{padding: "10px"}}>
+          <Table columns={columnsArray} values={valuesArray}/>
+        </div>
+        
+        {/* <div style={{padding: "10px"}}>
+          <Table columns={columnyArray} values={values}/>
+        </div> */}
+      </div>
     </>
   );
 }
