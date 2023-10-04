@@ -1,8 +1,10 @@
 import Papa from "papaparse";
+import { useState } from "react";
 
 export function InputField({ onFileUpload } : {onFileUpload: any}) {   
+    const [tableToUpload, setTableToUpload] = useState(1);
 
-    const handleFileUpload = (event: any) => {
+    const handleFileUpload = (event: any) => {      
         Papa.parse(event.target.files[0], {
             header: true,
             skipEmptyLines: true,
@@ -15,21 +17,25 @@ export function InputField({ onFileUpload } : {onFileUpload: any}) {
                     valuesArray.push(Object.values(elem));
                 });
 
+                tableToUpload === 1 ? setTableToUpload(2) : setTableToUpload(1);
                 onFileUpload([columnsArray[0], valuesArray]);
             }
-        })
+        });
     }
+
+    let order: string = tableToUpload === 1 ? "first" : "second";
 
     return (
         <div style={{display: "inline-flex"}}>
-        <p style={{marginRight: "10px"}}>Upload your CSV file</p>
-        <input 
-          type="file" 
-          name='file'
-          accept='.csv'
-          onChange={handleFileUpload}
-          style={{margin:" 16px auto"}}
-        />
+            <p>Table to upload: {tableToUpload}   </p>
+            <p style={{marginRight: "10px"}}>Upload your <b>{order}</b> CSV file</p>
+            <input 
+              type="file" 
+              name='file'
+              accept='.csv'
+              onChange={handleFileUpload}
+              style={{margin:" 16px auto"}}
+            />
       </div>
     )
 }
