@@ -25,14 +25,13 @@ function App() {
       <div>
         <h1 style={{textAlign: "center"}}>CSV comparison tool</h1>
       </div>
-      {toUpdateTable} to update table
       <br />
       <InputField onFileUpload={handleFileUpload}/>
       <br />
       <div style={{display: "flex"}}>
-      {tableData.map((table, index) => (
-          <div key={index} style={{padding: "10px", border: "1px solid black"}}>
-            <p>T{index + 1}</p>
+        {tableData[0].columns.length > 0 && tableData.map((table, index) => (
+          <div key={index} className='table-div'>
+            <p>Table {index + 1}</p>
             <Table columns={table.columns} values={table.data} />
           </div>
         ))}

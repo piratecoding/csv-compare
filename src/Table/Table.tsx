@@ -1,12 +1,15 @@
-export function Table({ columns, values } : { columns: string[], values: string[][] }) {
+import './Table.css'
 
+export function Table({ columns, values } : { columns: string[], values: string[][] }) {
+    
     return(
         <>
-        <table style={{borderCollapse: "collapse", border: "1px solid black", margin: "5px auto"}}>
+        <table className='table'>
             <thead>
               <tr>
+                { columns.length > 0 && <th>Row number</th> }
                 {columns.map((col: any, i: number) => (
-                  <th style={{border: "1px solid"}} key={i}>{col}</th>
+                  <th key={i}>{col}</th>
                 ))}
               </tr>
             </thead>
@@ -14,8 +17,9 @@ export function Table({ columns, values } : { columns: string[], values: string[
             <tbody>
               {values.map((v: any, i: number) => (
                 <tr key={i}>
+                  <td>{i + 1}</td>
                   {v.map((value: any, j: number) => (
-                    <td style={{border: "1px solid"}} key={j}>{value}</td>
+                    <td key={j}>{value}</td>
                   ))}
                 </tr>
               ))}

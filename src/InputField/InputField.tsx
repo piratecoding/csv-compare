@@ -27,7 +27,6 @@ export function InputField({ onFileUpload } : {onFileUpload: any}) {
 
     return (
         <div style={{display: "inline-flex"}}>
-            <p>Table to upload: {tableToUpload}   </p>
             <p style={{marginRight: "10px"}}>Upload your <b>{order}</b> CSV file</p>
             <input 
               type="file" 
