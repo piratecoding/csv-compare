@@ -2,6 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import { Table } from './Table';
 import { InputField } from './InputField';
+import { Loading } from './Loading';
+
+const worker = new Worker("./../work.ts");
 
 function App() {
   const [tableData, setTableData] = useState<{ columns: string[]; data: string[][] }[]>([
@@ -9,8 +12,10 @@ function App() {
     { columns: [], data: [] },
   ]);
   const [toUpdateTable, setToUpdate] = useState<number>(0);
+  // const [isLoading, setLoading] = useState(false);
 
-  const handleFileUpload = (data: any) => {
+  const handleFileUpload = async (data: any) => {
+    // setLoading(true);
     const updatedTableData = [...tableData];
     const currentTable = updatedTableData[toUpdateTable];
     currentTable.columns = data[0];
@@ -18,17 +23,25 @@ function App() {
     setTableData(updatedTableData);
 
     setToUpdate(1 - toUpdateTable); // Toggle between 0 and 1
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+    // setLoading(false)
   }
 
+  // console.log(isLoading)
+
   return (
-    <>      
+    <>
       <div>
-        <h1 style={{textAlign: "center"}}>CSV comparison tool</h1>
+        <h1 style={{ textAlign: "center" }}>CSV comparison tool</h1>
       </div>
       <br />
-      <InputField onFileUpload={handleFileUpload}/>
+      <div style={{ display: "inline-flex" }}>
+        <InputField onFileUpload={handleFileUpload} />
+        {/* {isLoading && <Loading />} */}
+
+      </div>
       <br />
-      <div style={{display: "flex"}}>
+      <div style={{ display: "flex" }}>
         {tableData[0].columns.length > 0 && tableData.map((table, index) => (
           <div key={index} className='table-div'>
             <p>Table {index + 1}</p>

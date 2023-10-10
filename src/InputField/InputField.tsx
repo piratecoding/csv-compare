@@ -1,10 +1,18 @@
 import Papa from "papaparse";
 import { useState } from "react";
+import { Loading } from "../Loading";
 
-export function InputField({ onFileUpload } : {onFileUpload: any}) {   
+// const worker = new Worker(".././Worker.ts");
+// const worker2 = new Worker(".././wrk.ts")
+
+export function InputField({ onFileUpload } : {onFileUpload: any}) {  
+    // worker.postMessage("start");
+    // worker.onmessage = ev => console.log(ev.data) 
     const [tableToUpload, setTableToUpload] = useState(1);
+    const [isLoading, setLoading] = useState(false);
 
-    const handleFileUpload = (event: any) => {      
+    const handleFileUpload = (event: any) => {  
+        setLoading(true);   
         Papa.parse(event.target.files[0], {
             header: true,
             skipEmptyLines: true,
@@ -19,6 +27,7 @@ export function InputField({ onFileUpload } : {onFileUpload: any}) {
 
                 tableToUpload === 1 ? setTableToUpload(2) : setTableToUpload(1);
                 onFileUpload([columnsArray[0], valuesArray]);
+                setLoading(false)
             }
         });
     }
@@ -35,6 +44,8 @@ export function InputField({ onFileUpload } : {onFileUpload: any}) {
               onChange={handleFileUpload}
               style={{margin:" 16px auto"}}
             />
+            {isLoading ? <Loading/> : null}
+            <Loading/>
       </div>
     )
 }
